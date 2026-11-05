@@ -261,7 +261,7 @@ const nf=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumF
 const money=n=>nf.format(n);
 const safeImg=s=>(typeof s==='string'&&/^data:image\/(jpeg|png|webp);base64,/.test(s))?s:null;
 const STATUS={live:'In shop',soldout:'Sold out',hidden:'Hidden'};
-const LS_KEY='dahlia-row-order-v1', FLASH_KEY='dahlia-row-flash';
+const LS_KEY='Petals-and-blooms-blooms-order-v1', FLASPetals-and-bloomsals-and-blooms-flash';
 function lsGet(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'null');}catch(e){return null;}}
 function lsSet(v){try{localStorage.setItem(LS_KEY,JSON.stringify(v));}catch(e){}}
 function flashSet(m){try{sessionStorage.setItem(FLASH_KEY,m);}catch(e){}}
@@ -380,7 +380,7 @@ function adminHTML(){
 }
 
 /* ---------- GitHub connection (owner login + publishing) ---------- */
-const GH_KEY='dahlia-row-github';
+const GH_KEY='Petals-and-blooms-blooms-github';
 function ghGuess(){
   const h=location.hostname,p=location.pathname.split('/').filter(Boolean),g={repo:'',branch:'',path:'index.html'};
   if(/\.github\.io$/i.test(h)){
@@ -490,7 +490,7 @@ function ghGateHTML(){
   return '<section class="gate"><div class="in narrow"><h1>Shop owner login</h1>'+
     '<p>Connect this shop to its GitHub repository to add and edit bouquets. Customers never see this, and nothing can be changed without your GitHub token.</p>'+
     '<form id="gh-form" class="gh-form" novalidate>'+
-    '<div class="field"><label for="g-repo">GitHub repository</label><input type="text" id="g-repo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="your-name/dahlia-row" value="'+esc(s.repo)+'"></div>'+
+    '<div class="field"><label for="g-repo">GitHub repository</label><input type="text" id="g-repo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="your-name/Petals-and-blooms-blooms" value="'+esc(s.repo)+'"></div>'+
     '<div class="field"><label for="g-path">Shop file</label><input type="text" id="g-path" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(s.path)+'"></div>'+
     '<div class="field"><label for="g-branch">Branch (leave empty for the default)</label><input type="text" id="g-branch" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="main" value="'+esc(s.branch)+'"></div>'+
     '<div class="field"><label for="g-token">GitHub token</label><input type="password" id="g-token" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(s.token)+'"></div>'+
