@@ -1,0 +1,790 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Dahlia Row</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style id="page-style">
+@import url('https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+/* Layout: full-bleed bands (sticky shop bar, blush hero with a drawn bouquet, filter chips + product grid, footer). Owner-only #admin view: product list + edit sheet. */
+:root{
+  --bg:#FAF2F6; --hero:#F3DEE8; --surface:#FFFAFC; --media:#F0DCE6;
+  --ink:#2A1424; --muted:#6E5566; --line:#E4CFDA;
+  --accent:#1E5B45; --on-accent:#F4FBF7; --bloom:#C2255C; --on-bloom:#FFFFFF;
+  --good:#1D6B43; --good-bg:#DDF0E4; --warn:#85530A; --warn-bg:#FAE9C6; --off:#6E5566; --off-bg:#EBDDE4;
+  --scrim:rgba(33,12,36,.52);
+  --display:'Gloock',Georgia,'Times New Roman',serif;
+  --body:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1A0F1E; --hero:#241528; --surface:#261729; --media:#33213A;
+    --ink:#F5E9F0; --muted:#BBA3B3; --line:#3D2A42;
+    --accent:#7FD1AE; --on-accent:#0F2419; --bloom:#FF7AA8; --on-bloom:#2A0F1C;
+    --good:#8FDDB0; --good-bg:#1F3A2B; --warn:#F2C879; --warn-bg:#3F3016; --off:#CDB6C5; --off-bg:#352440;
+    --scrim:rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1A0F1E; --hero:#241528; --surface:#261729; --media:#33213A;
+  --ink:#F5E9F0; --muted:#BBA3B3; --line:#3D2A42;
+  --accent:#7FD1AE; --on-accent:#0F2419; --bloom:#FF7AA8; --on-bloom:#2A0F1C;
+  --good:#8FDDB0; --good-bg:#1F3A2B; --warn:#F2C879; --warn-bg:#3F3016; --off:#CDB6C5; --off-bg:#352440;
+  --scrim:rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html.lock{overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3,p{margin:0}
+a{color:inherit}
+.in{width:100%;max-width:1120px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.in.narrow{max-width:880px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0}
+:focus-visible{outline:3px solid var(--bloom);outline-offset:2px}
+
+/* shop bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .in{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.brand-name{font-family:var(--display);font-size:24px;line-height:1;white-space:nowrap}
+.mk-p{fill:var(--bloom)} .mk-c{fill:var(--accent)}
+.bar-nav{display:flex;align-items:center;gap:8px}
+
+/* buttons */
+.btn{font:inherit;font-weight:600;font-size:15px;line-height:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.small{min-height:40px;padding:0 14px;font-size:14px}
+.btn.ghost{background:transparent}
+.btn.wide{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.badge{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--bloom);color:var(--on-bloom);font-size:12px;display:inline-grid;place-items:center;font-variant-numeric:tabular-nums}
+
+/* hero */
+.hero{background:var(--hero);border-bottom:1px solid var(--line)}
+.hero .in{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:end;padding-top:28px}
+.hero-copy{padding-bottom:24px;min-width:0}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,8.5vw,64px);line-height:1.02;letter-spacing:-.01em;margin-bottom:12px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--bloom)}
+.lede{max-width:46ch;color:var(--muted);font-size:17px;margin-bottom:20px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px;font-weight:500}
+.steps li{display:flex;gap:8px;align-items:baseline}
+.steps b{color:var(--bloom);font-variant-numeric:tabular-nums}
+.hero-art{width:clamp(110px,30vw,300px)}
+.hero-art svg{display:block;width:100%;height:auto}
+@keyframes rise{from{transform:translateY(16px) scale(.9)}to{transform:none}}
+.hero-art .blooms{transform-origin:200px 300px;animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion:reduce){.hero-art .blooms{animation:none}}
+
+/* catalog */
+.catalog{padding-block:28px 8px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-bottom:16px}
+.sec-head h2{font-family:var(--display);font-weight:400;font-size:28px}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip-btn{font:inherit;font-size:14px;font-weight:600;min-height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.chip-btn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr));gap:16px}
+@media (min-width:720px){.grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:20px}}
+.card{display:flex;flex-direction:column;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.media{position:relative;aspect-ratio:5/6;max-width:100%;background:var(--media);overflow:hidden}
+.media img,.media svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.media img{object-fit:cover}
+.card .body{display:flex;flex-direction:column;gap:6px;padding:12px 12px 14px;flex:1}
+.card h3{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;text-wrap:balance}
+.blurb{color:var(--muted);font-size:14px;line-height:1.4}
+.buy{margin-top:auto;padding-top:8px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:700;font-size:17px;font-variant-numeric:tabular-nums}
+.tag{position:absolute;top:10px;left:10px;z-index:1;background:var(--ink);color:var(--bg);padding:4px 9px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.card.is-sold .media>img,.card.is-sold .media>svg{opacity:.5}
+.empty-note{color:var(--muted);padding-block:24px}
+.foot{margin-top:36px;border-top:1px solid var(--line)}
+.foot .in{padding-block:22px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;color:var(--muted);font-size:14px}
+
+/* sheets */
+.sheet-back{position:fixed;inset:0;background:var(--scrim);z-index:40}
+.sheet{position:fixed;top:0;right:0;bottom:0;z-index:41;width:min(100%,480px);min-height:0;background:var(--bg);border-left:1px solid var(--line);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);outline:none}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.sheet-head h2{font-family:var(--display);font-weight:400;font-size:24px}
+.sheet-form{flex:1;min-height:0;display:flex;flex-direction:column}
+.sheet-body{flex:1;min-height:0;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:18px}
+.sheet-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.legend{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.field input[type="text"],.field input[type="password"],.field input[type="tel"],.field input[type="number"],.field input[type="date"],.field textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px;width:100%}
+.field textarea{min-height:84px;resize:vertical}
+.field [aria-invalid="true"]{border-color:var(--bloom)}
+.hint{color:var(--muted);font-size:14px}
+.err{color:var(--bloom);font-size:14px;font-weight:600}
+.muted{color:var(--muted);font-size:14px}
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:12px;color:var(--muted)}
+.empty.pad{padding-block:32px}
+.hint-top{margin-top:8px}
+
+/* cart */
+.line{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;margin-bottom:12px}
+.line .thumb{width:56px;border-radius:8px}
+.line-main{min-width:0}
+.line-main strong{display:block;font-weight:600}
+.stepper{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;background:var(--surface)}
+.stepper button{width:38px;height:38px;border:0;background:transparent;font:inherit;font-size:18px;color:var(--ink);cursor:pointer}
+.stepper span{min-width:24px;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;font-weight:700}
+#order-form{display:flex;flex-direction:column;gap:14px}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.result textarea{font:inherit;font-size:14px;width:100%;min-height:200px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px}
+.selectable{user-select:all}
+.owner-link{color:var(--muted);font-size:13px}
+.gh-form{display:flex;flex-direction:column;gap:14px;width:100%;max-width:460px;margin-top:6px}
+.gh-form .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink)}
+.gh-form .check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent);flex:none}
+.gh-help{width:100%;max-width:460px;margin-top:8px;font-size:14px;color:var(--muted)}
+.gh-help summary{cursor:pointer;font-weight:600;color:var(--ink);min-height:32px}
+.gh-help ol{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.gh-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-top:8px;color:var(--muted);font-size:14px}
+
+/* admin */
+.admin-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;padding-block:28px 14px}
+.eyebrow{margin-bottom:4px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--bloom)}
+.admin-head h1{font-family:var(--display);font-weight:400;font-size:clamp(30px,7vw,44px);line-height:1.05}
+.stats{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0;padding:0;color:var(--muted);font-size:15px}
+.stats div{display:flex;gap:6px}
+.stats dt{order:2}
+.stats dd{margin:0;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.rows{list-style:none;margin:16px 0 40px;padding:0;border-top:1px solid var(--line)}
+.arow{display:grid;grid-template-columns:56px minmax(0,1fr);gap:8px 12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.arow .thumb{width:56px;border-radius:8px}
+.arow-main{min-width:0}
+.arow-main strong{display:block;font-weight:600}
+.arow-actions{grid-column:2;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+@media (min-width:640px){
+  .arow{grid-template-columns:56px minmax(0,1fr) auto}
+  .arow-actions{grid-column:auto}
+}
+.pill{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.pill.live{background:var(--good-bg);color:var(--good)}
+.pill.soldout{background:var(--warn-bg);color:var(--warn)}
+.pill.hidden{background:var(--off-bg);color:var(--off)}
+.sample{font-size:12px;font-weight:600;color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:1px 6px;margin-left:6px}
+.gate .in{padding-block:56px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.gate h1{font-family:var(--display);font-weight:400;font-size:34px}
+.gate p{color:var(--muted);max-width:44ch}
+
+/* editor */
+.photo{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:start}
+.photo-preview{width:120px;border-radius:10px;border:1px solid var(--line)}
+.photo-side{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.vh:focus-visible+label{outline:3px solid var(--bloom);outline-offset:2px}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:0;padding:0;margin:0;min-width:0}
+.seg legend{padding:0;margin-bottom:6px}
+.seg-opt{position:relative;display:block}
+.seg-opt span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);font-weight:600;font-size:14px;cursor:pointer}
+.seg-opt input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.seg-opt input:focus-visible+span{outline:3px solid var(--bloom);outline-offset:2px}
+
+/* toast */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:10px;font-size:15px;font-weight:600;text-align:center}
+.toast:empty{display:none}
+</style>
+<div id="app"></div>
+<script type="application/json" id="shop-data">{"shop":{"name":"Dahlia Row","contact":""},"products":[{"id":"p1","name":"Rosé Hour","price":1850,"category":"Roses","blurb":"Pink roses, white filler and eucalyptus in soft paper.","image":null,"art":{"kind":"rose","colors":["#E5658E","#F7B4C6","#A92D5C","#F1D3C2"],"seed":11},"status":"live","sample":true},{"id":"p2","name":"Sunday Sunflowers","price":1450,"category":"Sunflowers","blurb":"Bright sunflowers with greens, tied with a brown ribbon.","image":null,"art":{"kind":"daisy","colors":["#F4B400","#FFD966","#5B3A1A","#FFF1C9"],"seed":23},"status":"live","sample":true},{"id":"p3","name":"Tulip Morning","price":1650,"category":"Tulips","blurb":"Coral tulips wrapped loose, best opened slowly.","image":null,"art":{"kind":"tulip","colors":["#F2735A","#FFC2A8","#C23B2A","#F6E3D0"],"seed":31},"status":"soldout","sample":true},{"id":"p4","name":"Red Letter","price":2400,"category":"Roses","blurb":"Deep red roses with baby's breath. A classic for anniversaries.","image":null,"art":{"kind":"rose","colors":["#B3122E","#E2566E","#6E0A1D","#F0CFCF"],"seed":41},"status":"live","sample":true},{"id":"p5","name":"Lilac Field","price":1250,"category":"Mixed","blurb":"White daisies and baby's breath in lilac paper.","image":null,"art":{"kind":"daisy","colors":["#FFFFFF","#E6D9F5","#F2C230","#D9C7EE"],"seed":53},"status":"live","sample":true},{"id":"p6","name":"Peach Parade","price":1350,"category":"Mixed","blurb":"Roses, daisies and tulips in peach tones.","image":null,"art":{"kind":"mixed","colors":["#F9A27B","#FFD3B8","#C95A3B","#FBE4D3"],"seed":67},"status":"live","sample":true}]}</script>
+<script id="page-script">
+(function(){
+'use strict';
+
+const TITLE='Dahlia Row';
+const DATA=JSON.parse(document.getElementById('shop-data').textContent);
+const state={
+  shop:DATA.shop,
+  products:DATA.products,
+  filter:'All',
+  cart:{},
+  form:{name:'',phone:'',date:'',address:'',message:''},
+  access:'pending',
+  artifact:null,
+  gh:null,
+  view:'shop',
+  sheet:null,
+  draft:null,
+  lastFocus:null,
+  busy:false
+};
+
+/* ---------- helpers ---------- */
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.prototype.slice.call((r||document).querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumFractionDigits:0,maximumFractionDigits:0});
+const money=n=>nf.format(n);
+const safeImg=s=>(typeof s==='string'&&/^data:image\/(jpeg|png|webp);base64,/.test(s))?s:null;
+const STATUS={live:'In shop',soldout:'Sold out',hidden:'Hidden'};
+const LS_KEY='dahlia-row-order-v1', FLASH_KEY='dahlia-row-flash';
+function lsGet(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'null');}catch(e){return null;}}
+function lsSet(v){try{localStorage.setItem(LS_KEY,JSON.stringify(v));}catch(e){}}
+function flashSet(m){try{sessionStorage.setItem(FLASH_KEY,m);}catch(e){}}
+function flashClear(){try{sessionStorage.removeItem(FLASH_KEY);}catch(e){}}
+function flashShow(){try{const m=sessionStorage.getItem(FLASH_KEY);if(m){sessionStorage.removeItem(FLASH_KEY);toast(m);}}catch(e){}}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function newId(){return 'p'+Date.now().toString(36)+Math.floor(Math.random()*1296).toString(36);}
+let toastTimer=0;
+function toast(msg){const t=$('#toast');if(!t)return;t.textContent=msg;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.textContent='';},3400);}
+function focusBy(act,key,val){const el=$$('[data-act="'+act+'"]').find(b=>b.dataset[key]===val);if(el)el.focus();}
+
+/* ---------- generated bouquet art (used until a real photo is uploaded) ---------- */
+function rng(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+const PRESETS=[
+  {kind:'rose',colors:['#E5658E','#F7B4C6','#A92D5C','#F1D3C2']},
+  {kind:'daisy',colors:['#F4B400','#FFD966','#5B3A1A','#FFF1C9']},
+  {kind:'tulip',colors:['#F2735A','#FFC2A8','#C23B2A','#F6E3D0']},
+  {kind:'rose',colors:['#B3122E','#E2566E','#6E0A1D','#F0CFCF']},
+  {kind:'daisy',colors:['#FFFFFF','#E6D9F5','#F2C230','#D9C7EE']},
+  {kind:'mixed',colors:['#F9A27B','#FFD3B8','#C95A3B','#FBE4D3']}
+];
+const HERO_ART={kind:'mixed',colors:['#E5658E','#F7B4C6','#A92D5C','#F1D3C2'],seed:5};
+function presetFor(name){const h=hashStr(String(name||'').toLowerCase());const p=PRESETS[h%PRESETS.length];return{kind:p.kind,colors:p.colors.slice(),seed:(h%997)+1};}
+const f1=n=>n.toFixed(1);
+function rose(x,y,R,c1,c2,c3){
+  let g='';
+  for(let i=0;i<7;i++){const a=i*Math.PI*2/7;g+='<circle cx="'+f1(x+Math.cos(a)*R*.7)+'" cy="'+f1(y+Math.sin(a)*R*.7)+'" r="'+f1(R*.44)+'" fill="'+c1+'" stroke="rgba(60,10,30,.28)" stroke-width="1.4"/>';}
+  g+='<circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="'+f1(R*.8)+'" fill="'+c2+'" stroke="rgba(60,10,30,.22)" stroke-width="1.4"/>';
+  [[.6,c1],[.42,c2],[.26,c1]].forEach((p,i)=>{g+='<circle cx="'+f1(x+(i%2?2:-2))+'" cy="'+f1(y+1)+'" r="'+f1(R*p[0])+'" fill="'+p[1]+'" stroke="rgba(60,10,30,.3)" stroke-width="1.4"/>';});
+  g+='<circle cx="'+f1(x-1)+'" cy="'+f1(y+1)+'" r="'+f1(R*.1)+'" fill="'+c3+'"/>';
+  return g;
+}
+function daisy(x,y,R,c1,c2,c3){
+  let g='';const n=14;
+  for(let i=0;i<n;i++){g+='<ellipse cx="'+f1(x)+'" cy="'+f1(y-R*.62)+'" rx="'+f1(R*.2)+'" ry="'+f1(R*.42)+'" transform="rotate('+(i*360/n)+' '+f1(x)+' '+f1(y)+')" fill="'+(i%2?c2:c1)+'" stroke="rgba(60,30,40,.22)" stroke-width="1"/>';}
+  g+='<circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="'+f1(R*.36)+'" fill="'+c3+'" stroke="rgba(0,0,0,.2)" stroke-width="1.2"/>';
+  return g;
+}
+function tulip(x,y,R,c1,c2,c3){
+  const w=R*.42,h=R*.78;
+  const e=(cx,rot,fill)=>'<ellipse cx="'+f1(cx)+'" cy="'+f1(y)+'" rx="'+f1(w)+'" ry="'+f1(h)+'" transform="rotate('+rot+' '+f1(x)+' '+f1(y+h*.7)+')" fill="'+fill+'" stroke="rgba(60,20,20,.28)" stroke-width="1.3"/>';
+  return e(x-w*.8,-16,c2)+e(x+w*.8,16,c2)+e(x,0,c1)+'<path d="M'+f1(x-w*.35)+' '+f1(y-h*.55)+' Q'+f1(x)+' '+f1(y-h*.2)+' '+f1(x+w*.35)+' '+f1(y-h*.55)+'" fill="none" stroke="'+c3+'" stroke-width="2" opacity=".55"/>';
+}
+function bloom(kind,x,y,R,c1,c2,c3){return kind==='daisy'?daisy(x,y,R,c1,c2,c3):kind==='tulip'?tulip(x,y,R,c1,c2,c3):rose(x,y,R,c1,c2,c3);}
+function bouquetSVG(art){
+  const cols=art.colors,c1=cols[0],c2=cols[1],c3=cols[2],paper=cols[3],kind=art.kind||'rose',r=rng(art.seed||7);
+  const leafA='#2E7D57',leafB='#3F9A6C',stem='#2A6B49';
+  let s='<svg viewBox="0 0 400 480" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">';
+  for(let i=0;i<30;i++){const a=r()*Math.PI*2,d=Math.sqrt(r()),x=200+Math.cos(a)*d*150,y=170+Math.sin(a)*d*125,rr=3+r()*2.6;if(y>285)continue;s+='<circle cx="'+f1(x)+'" cy="'+f1(y)+'" r="'+f1(rr)+'" fill="#FFFFFF" stroke="rgba(60,30,60,.22)" stroke-width="1"/>';}
+  [-64,-42,-20,20,42,64].forEach((a,i)=>{s+='<ellipse cx="200" cy="'+f1(300-118-r()*14)+'" rx="'+f1(13+r()*4)+'" ry="'+f1(36+r()*8)+'" transform="rotate('+f1(a+r()*6-3)+' 200 300)" fill="'+(i%2?leafA:leafB)+'"/>';});
+  const slots=[[200,150,56],[126,188,47],[274,188,47],[150,92,41],[252,98,41],[104,256,38],[298,258,38]];
+  const pts=slots.map(p=>[p[0]+(r()*10-5),p[1]+(r()*8-4),p[2]+(r()*6-3)]);
+  pts.forEach(p=>{s+='<line x1="200" y1="332" x2="'+f1(p[0])+'" y2="'+f1(p[1])+'" stroke="'+stem+'" stroke-width="5" stroke-linecap="round"/>';});
+  s+='<g class="blooms">';
+  pts.forEach((p,i)=>{s+=bloom(kind==='mixed'?['rose','daisy','tulip'][i%3]:kind,p[0],p[1],p[2],c1,c2,c3);});
+  s+='</g>';
+  s+='<path d="M88 294 Q200 326 312 294 L234 466 Q200 478 166 466 Z" fill="'+paper+'" stroke="rgba(60,30,60,.25)" stroke-width="1.5"/>';
+  s+='<path d="M88 294 Q148 332 212 344 L166 466 Z" fill="rgba(60,30,60,.07)"/>';
+  s+='<path d="M158 396 Q200 414 242 396 L238 416 Q200 434 162 416 Z" fill="'+c3+'"/>';
+  s+='<ellipse cx="184" cy="404" rx="16" ry="9" transform="rotate(-20 184 404)" fill="'+c3+'"/><ellipse cx="216" cy="404" rx="16" ry="9" transform="rotate(20 216 404)" fill="'+c3+'"/><circle cx="200" cy="408" r="6" fill="'+c1+'"/>';
+  return s+'</svg>';
+}
+const MARK='<svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" focusable="false">'+[0,72,144,216,288].map(a=>'<ellipse class="mk-p" cx="16" cy="9" rx="4.6" ry="7" transform="rotate('+a+' 16 16)"/>').join('')+'<circle class="mk-c" cx="16" cy="16" r="3.6"/></svg>';
+function mediaHTML(p){const img=safeImg(p.image);return img?'<img src="'+img+'" alt="'+esc(p.name)+'" loading="lazy">':bouquetSVG(p.art||presetFor(p.name));}
+
+/* ---------- data helpers ---------- */
+const byId=id=>state.products.find(p=>p.id===id);
+const liveProducts=()=>state.products.filter(p=>p.status!=='hidden');
+function cartItems(){return Object.keys(state.cart).map(id=>{const p=byId(id);return(p&&p.status==='live')?{p:p,qty:state.cart[id]}:null;}).filter(Boolean);}
+const cartCount=()=>cartItems().reduce((n,i)=>n+i.qty,0);
+const cartTotal=()=>cartItems().reduce((n,i)=>n+i.qty*i.p.price,0);
+const persist=()=>lsSet({cart:state.cart,form:state.form});
+const addLabel=p=>{const q=state.cart[p.id]||0;return q?'Add · '+q:'Add';};
+
+/* ---------- shop view ---------- */
+function cardHTML(p){
+  const sold=p.status==='soldout';
+  return '<article class="card'+(sold?' is-sold':'')+'"><div class="media">'+mediaHTML(p)+(sold?'<span class="tag">Sold out</span>':'')+'</div>'+
+    '<div class="body"><h3>'+esc(p.name)+'</h3><p class="blurb">'+esc(p.blurb)+'</p>'+
+    '<div class="buy"><span class="price">'+money(p.price)+'</span>'+
+    '<button type="button" class="btn small primary" data-act="add" data-id="'+p.id+'" aria-label="Add '+esc(p.name)+' to your order"'+(sold?' disabled':'')+'>'+(sold?'Sold out':addLabel(p))+'</button></div></div></article>';
+}
+function catalogInner(){
+  const live=liveProducts();
+  const cats=[];live.forEach(p=>{if(p.category&&cats.indexOf(p.category)<0)cats.push(p.category);});
+  if(state.filter!=='All'&&cats.indexOf(state.filter)<0)state.filter='All';
+  const shown=live.filter(p=>state.filter==='All'||p.category===state.filter);
+  const chips=cats.length>1?['All'].concat(cats).map(c=>'<button type="button" class="chip-btn" data-act="filter" data-cat="'+esc(c)+'" aria-pressed="'+(state.filter===c)+'">'+esc(c)+'</button>').join(''):'';
+  return '<div class="sec-head"><h2>Bouquets</h2>'+(chips?'<div class="filters" role="group" aria-label="Filter by flower">'+chips+'</div>':'')+'</div>'+
+    (shown.length?'<div class="grid">'+shown.map(p=>cardHTML(p)).join('')+'</div>':'<p class="empty-note">No bouquets are listed right now. Please check back soon.</p>');
+}
+function shopHTML(){
+  return '<section class="hero"><div class="in"><div class="hero-copy"><h1>Hand-tied <em>bouquets</em>, ready to send.</h1>'+
+    '<p class="lede">Choose a bouquet, add your card message, and send us the order. The shop confirms the total and delivery with you before anything is final.</p>'+
+    '<ol class="steps"><li><b>1</b> Pick a bouquet</li><li><b>2</b> Add your card and date</li><li><b>3</b> Copy the order and send it to the shop</li></ol></div>'+
+    '<div class="hero-art">'+bouquetSVG(HERO_ART)+'</div></div></section>'+
+    '<section class="catalog" id="catalog"><div class="in" id="catalog-in">'+catalogInner()+'</div></section>'+
+    '<footer class="foot"><div class="in"><span>'+esc(state.shop.name)+' · Prices in Philippine pesos</span><span>An order is final only after the shop confirms it with you.</span>'+(state.access==='owner'?'':'<a class="owner-link" href="#admin">Owner login</a>')+'</div></footer>';
+}
+function renderCatalog(){const c=$('#catalog-in');if(c)c.innerHTML=catalogInner();}
+function refreshAddLabels(){$$('[data-act="add"]').forEach(b=>{const p=byId(b.dataset.id);if(p&&p.status==='live')b.textContent=addLabel(p);});}
+
+/* ---------- admin view ---------- */
+function adminHTML(){
+  if(state.access==='pending')return '<section class="gate"><div class="in narrow"><h1>Shop admin</h1><p>Checking your access…</p></div></section>';
+  if(state.access!=='owner')return ghGateHTML();
+  const n={live:0,soldout:0,hidden:0};state.products.forEach(p=>{n[p.status]=(n[p.status]||0)+1;});
+  const rows=state.products.map(p=>'<li class="arow"><div class="thumb media">'+mediaHTML(p)+'</div><div class="arow-main"><strong>'+esc(p.name)+(p.sample?'<span class="sample">Sample</span>':'')+'</strong><span class="muted">'+esc(p.category||'')+' · '+money(p.price)+'</span></div>'+
+    '<div class="arow-actions"><span class="pill '+p.status+'">'+STATUS[p.status]+'</span><button type="button" class="btn small" data-act="edit" data-id="'+p.id+'" aria-label="Edit '+esc(p.name)+'">Edit</button></div></li>').join('');
+  return '<section class="admin"><div class="in narrow"><div class="admin-head"><div><p class="eyebrow">Shop admin</p><h1>Products</h1></div><button type="button" class="btn primary" data-act="new">Upload product</button></div>'+
+    '<dl class="stats"><div><dt>in shop</dt><dd>'+n.live+'</dd></div><div><dt>sold out</dt><dd>'+n.soldout+'</dd></div><div><dt>hidden</dt><dd>'+n.hidden+'</dd></div></dl>'+
+    (state.gh?'<div class="gh-bar"><span>Publishing to <strong>'+esc(state.gh.repo)+'</strong> · '+esc(state.gh.path)+'</span><button type="button" class="btn small ghost" data-act="gh-off">Disconnect</button></div><p class="hint hint-top">Saving commits the change to GitHub. The live site updates once GitHub Pages rebuilds, usually within a minute or two. Products can be hidden from the shop but not deleted here.</p>':'<p class="hint hint-top">Saving puts the change on the shop right away. Products can be hidden from the shop but not deleted here.</p>')+
+    (state.products.length?'<ul class="rows">'+rows+'</ul>':'<div class="empty pad"><p>No products yet. Upload the first bouquet to start the shop.</p></div>')+
+    '</div></section>';
+}
+
+/* ---------- GitHub connection (owner login + publishing) ---------- */
+const GH_KEY='dahlia-row-github';
+function ghGuess(){
+  const h=location.hostname,p=location.pathname.split('/').filter(Boolean),g={repo:'',branch:'',path:'index.html'};
+  if(/\.github\.io$/i.test(h)){
+    const owner=h.replace(/\.github\.io$/i,'');
+    if(p.length&&!/\.html?$/i.test(p[0])){g.repo=owner+'/'+p.shift();}else g.repo=owner+'/'+h;
+    if(p.length)g.path=/\.html?$/i.test(p[p.length-1])?p.join('/'):p.join('/')+'/index.html';
+  }
+  return g;
+}
+function ghSaved(){
+  let c=null,t='';
+  try{c=JSON.parse(localStorage.getItem(GH_KEY)||'null');}catch(e){}
+  try{t=sessionStorage.getItem(GH_KEY+'-t')||'';}catch(e){}
+  const g=ghGuess();
+  const o={repo:(c&&c.repo)||g.repo,branch:(c&&c.branch)||g.branch,path:(c&&c.path)||g.path,token:(c&&c.token)||t,remember:!!(c&&c.token)||!c};
+  return o;
+}
+function ghStore(cfg,remember){
+  try{
+    localStorage.setItem(GH_KEY,JSON.stringify({repo:cfg.repo,branch:cfg.branch,path:cfg.path,token:remember?cfg.token:undefined}));
+    if(remember)sessionStorage.removeItem(GH_KEY+'-t');else sessionStorage.setItem(GH_KEY+'-t',cfg.token);
+  }catch(e){}
+}
+function ghForget(){try{const c=JSON.parse(localStorage.getItem(GH_KEY)||'null')||{};delete c.token;localStorage.setItem(GH_KEY,JSON.stringify(c));sessionStorage.removeItem(GH_KEY+'-t');}catch(e){}}
+function ghMsg(code){
+  return({
+    bad_token:'GitHub did not accept that token. Check that it was copied in full and has not expired.',
+    not_found:'GitHub could not find that repository. Check the spelling, and that the token was given access to it.',
+    not_writer:'That token can read the repository but not change it. Give it Contents: Read and write access.',
+    rate_limited:'GitHub is limiting requests right now. Wait a minute and try again.',
+    conflict:'The shop changed on GitHub since you opened it. The latest version has been loaded. Close this and make the change again.',
+    too_big:'The shop page is full. Use fewer or smaller photos.',
+    network:'Could not reach GitHub. Check your connection and try again.'
+  })[code]||'Something went wrong talking to GitHub. Please try again.';
+}
+function textToB64(s){
+  const b=new TextEncoder().encode(s);let bin='';
+  for(let i=0;i<b.length;i+=0x8000)bin+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));
+  return btoa(bin);
+}
+function b64ToText(b){
+  const bin=atob(String(b).replace(/\s/g,''));const u=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+  return new TextDecoder().decode(u);
+}
+async function ghApi(path,opt){
+  const g=state.gh;opt=opt||{};
+  const headers=Object.assign({'Accept':'application/vnd.github+json','Authorization':'Bearer '+g.token,'X-GitHub-Api-Version':'2022-11-28'},opt.headers||{});
+  try{return await fetch('https://api.github.com'+path,Object.assign({},opt,{headers:headers}));}
+  catch(e){throw{code:'network'};}
+}
+function ghErr(r){
+  const s=r.status;let code='unknown';
+  if(s===401)code='bad_token';
+  else if(s===403)code=r.headers.get('x-ratelimit-remaining')==='0'?'rate_limited':'not_writer';
+  else if(s===404)code='not_found';
+  else if(s===409||s===422)code='conflict';
+  else if(s===413)code='too_big';
+  return{code:code,status:s};
+}
+function ghFileURL(){
+  const g=state.gh;
+  return '/repos/'+g.repo+'/contents/'+g.path.split('/').map(encodeURIComponent).join('/');
+}
+async function ghLoad(){
+  const g=state.gh,q=g.branch?'?ref='+encodeURIComponent(g.branch):'';
+  const r=await ghApi(ghFileURL()+q);
+  if(r.status===404){g.sha=null;return null;}
+  if(!r.ok)throw ghErr(r);
+  const j=await r.json();g.sha=j.sha;
+  let text='';
+  if(j.content&&j.encoding==='base64')text=b64ToText(j.content);
+  else{
+    const r2=await ghApi(ghFileURL()+q,{headers:{'Accept':'application/vnd.github.raw+json'}});
+    if(!r2.ok)throw ghErr(r2);
+    text=await r2.text();
+  }
+  try{
+    const el=new DOMParser().parseFromString(text,'text/html').getElementById('shop-data');
+    return el?JSON.parse(el.textContent):null;
+  }catch(e){return null;}
+}
+async function ghConnect(cfg){
+  state.gh={repo:cfg.repo,branch:cfg.branch||'',path:cfg.path||'index.html',token:cfg.token,sha:null};
+  try{
+    const r=await ghApi('/repos/'+cfg.repo);
+    if(!r.ok)throw ghErr(r);
+    const j=await r.json();
+    if(j.permissions&&j.permissions.push===false)throw{code:'not_writer'};
+    if(!state.gh.branch)state.gh.branch=j.default_branch||'main';
+    const d=await ghLoad();
+    if(d&&Array.isArray(d.products)){state.shop=d.shop||state.shop;state.products=d.products;}
+    state.access='owner';
+  }catch(e){state.gh=null;throw e;}
+}
+async function ghPublish(html){
+  const g=state.gh;
+  const body={message:'Update shop from admin',content:textToB64(html),branch:g.branch};
+  if(g.sha)body.sha=g.sha;
+  const r=await ghApi(ghFileURL(),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok)throw ghErr(r);
+  const j=await r.json();
+  if(j&&j.content&&j.content.sha)g.sha=j.content.sha;
+}
+function ghGateHTML(){
+  const s=ghSaved();
+  return '<section class="gate"><div class="in narrow"><h1>Shop owner login</h1>'+
+    '<p>Connect this shop to its GitHub repository to add and edit bouquets. Customers never see this, and nothing can be changed without your GitHub token.</p>'+
+    '<form id="gh-form" class="gh-form" novalidate>'+
+    '<div class="field"><label for="g-repo">GitHub repository</label><input type="text" id="g-repo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="your-name/dahlia-row" value="'+esc(s.repo)+'"></div>'+
+    '<div class="field"><label for="g-path">Shop file</label><input type="text" id="g-path" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(s.path)+'"></div>'+
+    '<div class="field"><label for="g-branch">Branch (leave empty for the default)</label><input type="text" id="g-branch" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="main" value="'+esc(s.branch)+'"></div>'+
+    '<div class="field"><label for="g-token">GitHub token</label><input type="password" id="g-token" autocomplete="off" autocapitalize="off" spellcheck="false" value="'+esc(s.token)+'"></div>'+
+    '<label class="check"><input type="checkbox" id="g-remember"'+(s.remember?' checked':'')+'><span>Keep me connected on this device</span></label>'+
+    '<p class="err" id="g-err" role="alert" hidden></p>'+
+    '<button type="submit" class="btn primary" id="g-go">Connect</button></form>'+
+    '<details class="gh-help"><summary>How do I get a token?</summary><ol>'+
+    '<li>On GitHub open Settings, Developer settings, Personal access tokens, Fine-grained tokens, then Generate new token.</li>'+
+    '<li>Under Repository access choose Only select repositories and pick this shop\'s repository.</li>'+
+    '<li>Under Permissions, Repository permissions, set Contents to Read and write.</li>'+
+    '<li>Generate it, copy it, and paste it above. Never share it with anyone.</li></ol></details>'+
+    '<a class="btn small ghost" href="#shop">Back to the shop</a></div></section>';
+}
+function showGhErr(m){const e=$('#g-err');if(!e)return;e.textContent=m;e.hidden=!m;}
+async function connectGh(){
+  if(state.busy)return;
+  const repo=$('#g-repo').value.trim().replace(/^https?:\/\/github\.com\//i,'').replace(/\.git$/i,'').replace(/^\/+|\/+$/g,'');
+  const path=($('#g-path').value.trim()||'index.html').replace(/^\/+/,''),branch=$('#g-branch').value.trim();
+  const token=$('#g-token').value.trim(),remember=$('#g-remember').checked;
+  ['g-repo','g-token'].forEach(i=>$('#'+i).removeAttribute('aria-invalid'));
+  if(!/^[\w.-]+\/[\w.-]+$/.test(repo)){$('#g-repo').setAttribute('aria-invalid','true');showGhErr('Enter the repository as your-name/repository-name.');$('#g-repo').focus();return;}
+  if(!token){$('#g-token').setAttribute('aria-invalid','true');showGhErr('Paste your GitHub token.');$('#g-token').focus();return;}
+  showGhErr('');state.busy=true;const b=$('#g-go');if(b){b.disabled=true;b.textContent='Connecting…';}
+  try{
+    await ghConnect({repo:repo,branch:branch,path:path,token:token});
+    ghStore(state.gh,remember);state.busy=false;
+    renderBar();renderMain();toast('Connected to GitHub.');
+  }catch(e){
+    state.busy=false;const b2=$('#g-go');if(b2){b2.disabled=false;b2.textContent='Connect';}
+    showGhErr(ghMsg(e&&e.code));
+  }
+}
+function ghOff(){ghForget();state.gh=null;state.access='none';renderBar();renderMain();toast('Disconnected from GitHub.');}
+
+/* ---------- bar + main ---------- */
+function renderBar(){
+  const bar=$('#bar');if(!bar)return;
+  const count=cartCount();
+  let nav='';
+  if(state.access==='owner')nav+=state.view==='admin'?'<a class="btn small ghost" href="#shop">View shop</a>':'<a class="btn small ghost" href="#admin">Admin</a>';
+  if(state.view!=='admin')nav+='<button type="button" class="btn small" data-act="open-cart" aria-label="Open your order, '+count+(count===1?' item':' items')+'">Order <span class="badge">'+count+'</span></button>';
+  bar.innerHTML='<div class="in"><a class="brand" href="#shop" aria-label="'+esc(state.shop.name)+' shop">'+MARK+'<span class="brand-name">'+esc(state.shop.name)+'</span></a><nav class="bar-nav">'+nav+'</nav></div>';
+}
+function renderMain(){const m=$('#main');if(m)m.innerHTML=state.view==='admin'?adminHTML():shopHTML();}
+function routeFromHash(){state.view=(location.hash==='#admin')?'admin':'shop';}
+
+/* ---------- sheets ---------- */
+function openSheet(html,kind){
+  closeSheet(true);
+  state.sheet=kind;state.lastFocus=document.activeElement;
+  $('#sheet-root').innerHTML=html;
+  document.documentElement.classList.add('lock');
+  const panel=$('.sheet');if(panel)panel.focus();
+}
+function closeSheet(silent){
+  if(!state.sheet)return;
+  const wasCart=state.sheet==='cart';
+  $('#sheet-root').innerHTML='';state.sheet=null;state.draft=null;
+  document.documentElement.classList.remove('lock');
+  if(wasCart)refreshAddLabels();
+  if(!silent){const f=state.lastFocus;if(f&&document.contains(f)&&f.focus)f.focus();else{const cb=$('[data-act="open-cart"]');if(cb)cb.focus();}}
+}
+
+/* ---------- cart ---------- */
+function cartLinesHTML(){
+  const items=cartItems();
+  if(!items.length)return '<div class="empty"><p>Your order is empty.</p><button type="button" class="btn" data-act="browse">Browse bouquets</button></div>';
+  return items.map(i=>'<div class="line"><div class="thumb media">'+mediaHTML(i.p)+'</div><div class="line-main"><strong>'+esc(i.p.name)+'</strong><span class="muted">'+money(i.p.price)+'</span></div>'+
+    '<div class="stepper" role="group" aria-label="Quantity for '+esc(i.p.name)+'"><button type="button" data-act="dec" data-id="'+i.p.id+'" aria-label="One fewer">−</button><span aria-live="polite">'+i.qty+'</span><button type="button" data-act="inc" data-id="'+i.p.id+'" aria-label="One more">+</button></div></div>').join('')+
+    '<div class="total"><span>Total before delivery</span><span class="price">'+money(cartTotal())+'</span></div>';
+}
+function cartSheetHTML(){
+  const f=state.form;
+  return '<div class="sheet-back" data-act="close-sheet"></div><aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">'+
+    '<div class="sheet-head"><h2 id="sheet-title">Your order</h2><button type="button" class="btn small ghost" data-act="close-sheet">Close</button></div>'+
+    '<div class="sheet-body"><div id="cart-lines">'+cartLinesHTML()+'</div>'+
+    '<form id="order-form" novalidate'+(cartCount()?'':' hidden')+'>'+
+    '<div class="field"><label for="o-name">Your name</label><input type="text" id="o-name" autocomplete="name" value="'+esc(f.name)+'"></div>'+
+    '<div class="field"><label for="o-phone">Mobile number</label><input type="tel" id="o-phone" inputmode="tel" autocomplete="tel" value="'+esc(f.phone)+'"></div>'+
+    '<div class="field"><label for="o-date">Delivery date</label><input type="date" id="o-date" min="'+todayISO()+'" value="'+esc(f.date)+'"></div>'+
+    '<div class="field"><label for="o-address">Delivery address</label><textarea id="o-address" autocomplete="street-address">'+esc(f.address)+'</textarea></div>'+
+    '<div class="field"><label for="o-message">Card message (optional)</label><textarea id="o-message" maxlength="240">'+esc(f.message)+'</textarea></div>'+
+    '<p class="err" id="o-err" role="alert" hidden></p>'+
+    '<button type="submit" class="btn primary wide">Copy order</button></form>'+
+    '<div class="result" id="order-result" hidden></div></div></aside>';
+}
+function openCart(){openSheet(cartSheetHTML(),'cart');}
+function updateCartSheet(){
+  const l=$('#cart-lines');if(!l)return;
+  l.innerHTML=cartLinesHTML();
+  const f=$('#order-form');if(f)f.hidden=!cartCount();
+  renderBar();
+}
+function changeQty(id,d){
+  const q=(state.cart[id]||0)+d;
+  if(q<=0)delete state.cart[id];else state.cart[id]=Math.min(q,20);
+  persist();updateCartSheet();
+  if(state.cart[id])focusBy(d>0?'inc':'dec','id',id);else{const s=$('.sheet');if(s)s.focus();}
+}
+function addToCart(id,btn){
+  const p=byId(id);if(!p||p.status!=='live')return;
+  state.cart[id]=Math.min((state.cart[id]||0)+1,20);
+  persist();renderBar();btn.textContent=addLabel(p);toast(p.name+' added to your order');
+}
+function orderText(){
+  const f=state.form;
+  const lines=cartItems().map(i=>i.qty+' × '+i.p.name+' — '+money(i.p.price*i.qty));
+  const d=new Date(f.date+'T00:00:00');
+  const when=isNaN(d.getTime())?f.date:d.toLocaleDateString('en-PH',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const out=['Order request for '+state.shop.name,''].concat(lines,['','Total before delivery: '+money(cartTotal()),'','Name: '+f.name,'Mobile: '+f.phone,'Deliver on: '+when,'Address: '+f.address]);
+  if(f.message)out.push('Card message: '+f.message);
+  return out.join('\n');
+}
+async function copyText(text){try{await navigator.clipboard.writeText(text);return true;}catch(e){return false;}}
+function submitOrder(){
+  const f=state.form,err=$('#o-err');
+  const need=[['name','o-name','your name'],['phone','o-phone','your mobile number'],['date','o-date','the delivery date'],['address','o-address','the delivery address']];
+  const missing=need.filter(n=>!String(f[n[0]]||'').trim());
+  need.forEach(n=>{const el=$('#'+n[1]);if(el){if(missing.indexOf(n)>=0)el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');}});
+  if(missing.length){err.textContent='Please add '+missing.map(m=>m[2]).join(', ')+'.';err.hidden=false;const first=$('#'+missing[0][1]);if(first)first.focus();return;}
+  err.hidden=true;
+  if(!cartCount())return;
+  const text=orderText();
+  const pending=copyText(text);
+  pending.then(ok=>{
+    const box=$('#order-result');if(!box)return;
+    const contact=state.shop.contact?'<p>Send it to: <strong class="selectable">'+esc(state.shop.contact)+'</strong></p>':'';
+    box.hidden=false;
+    box.innerHTML='<p><strong>'+(ok?'Copied.':'Copy this order.')+'</strong> '+(ok?'Paste it into a message to the shop to confirm your order.':'Your browser blocked automatic copying. Select the text below, copy it, and send it to the shop.')+'</p>'+contact+'<textarea id="order-text" readonly>'+esc(text)+'</textarea>';
+    const ta=$('#order-text');
+    if(!ok&&ta){ta.focus();ta.select();}
+    if(box.scrollIntoView)box.scrollIntoView({block:'nearest'});
+  });
+}
+
+/* ---------- admin editor ---------- */
+function editorHTML(p){
+  const cats=[];state.products.forEach(x=>{if(x.category&&cats.indexOf(x.category)<0)cats.push(x.category);});
+  const st=p?p.status:'live';
+  const seg=['live','soldout','hidden'].map(k=>'<label class="seg-opt"><input type="radio" class="vh" name="status" value="'+k+'"'+(st===k?' checked':'')+'><span>'+STATUS[k]+'</span></label>').join('');
+  return '<div class="sheet-back" data-act="close-sheet"></div><aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">'+
+    '<div class="sheet-head"><h2 id="sheet-title">'+(p?'Edit product':'Upload product')+'</h2><button type="button" class="btn small ghost" data-act="close-sheet">Cancel</button></div>'+
+    '<form id="edit-form" class="sheet-form" novalidate><div class="sheet-body">'+
+    '<div class="field"><span class="legend">Photo</span><div class="photo"><div class="photo-preview media" id="photo-preview"></div><div class="photo-side">'+
+    '<input id="photo-input" class="vh" type="file" accept="image/*"><label for="photo-input" class="btn small">Choose photo</label>'+
+    '<button type="button" class="btn small ghost" data-act="remove-photo">Remove photo</button><p class="hint" id="photo-note"></p></div></div></div>'+
+    '<div class="field"><label for="e-name">Name</label><input type="text" id="e-name" maxlength="60" autocomplete="off" value="'+esc(p?p.name:'')+'"></div>'+
+    '<div class="field"><label for="e-price">Price in pesos</label><input type="number" id="e-price" inputmode="numeric" min="0" step="1" value="'+(p?p.price:'')+'"></div>'+
+    '<div class="field"><label for="e-cat">Flower type</label><input type="text" id="e-cat" list="cat-list" maxlength="30" autocomplete="off" placeholder="Roses, Tulips, Mixed" value="'+esc(p?p.category:'')+'"><datalist id="cat-list">'+cats.map(c=>'<option value="'+esc(c)+'">').join('')+'</datalist></div>'+
+    '<div class="field"><label for="e-blurb">Short description</label><textarea id="e-blurb" maxlength="140">'+esc(p?p.blurb:'')+'</textarea></div>'+
+    '<fieldset class="seg"><legend class="legend">Status</legend>'+seg+'</fieldset>'+
+    '</div><div class="sheet-foot"><p class="err" id="e-err" role="alert" hidden></p><button type="submit" class="btn primary wide" id="e-save">'+(p?'Save changes':'Upload product')+'</button></div></form></aside>';
+}
+function openEditor(id){
+  if(state.access!=='owner')return;
+  const p=id?byId(id):null;
+  openSheet(editorHTML(p),'edit');
+  state.draft={id:p?p.id:null,image:p?safeImg(p.image):null,art:p?p.art:null};
+  updatePhotoPreview();
+}
+function updatePhotoPreview(){
+  const box=$('#photo-preview');if(!box||!state.draft)return;
+  const d=state.draft,nm=$('#e-name');
+  box.innerHTML=d.image?'<img src="'+d.image+'" alt="Product photo preview">':bouquetSVG(d.art||presetFor(nm?nm.value:''));
+  const note=$('#photo-note');if(note)note.textContent=d.image?'Photo added. It shows on the shop after you save.':'No photo yet, so the shop shows an illustration.';
+  const rm=$('[data-act="remove-photo"]');if(rm)rm.hidden=!d.image;
+}
+function showEditErr(m){const e=$('#e-err');if(!e)return;e.textContent=m;e.hidden=!m;}
+function fileToDataURL(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('That file could not be read.'));r.readAsDataURL(file);});}
+function loadImage(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('That image could not be read. Try a JPG or PNG.'));i.src=src;});}
+async function processImage(file){
+  if(!file||String(file.type).indexOf('image/')!==0)throw new Error('Choose an image file, like a JPG or PNG.');
+  const img=await loadImage(await fileToDataURL(file));
+  const tries=[[900,.82],[900,.7],[720,.66]];
+  let data='';
+  for(let t=0;t<tries.length;t++){
+    const k=Math.min(1,tries[t][0]/Math.max(img.naturalWidth,img.naturalHeight));
+    const w=Math.max(1,Math.round(img.naturalWidth*k)),h=Math.max(1,Math.round(img.naturalHeight*k));
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+    data=c.toDataURL('image/jpeg',tries[t][1]);
+    if(data.length<420000)break;
+  }
+  return data;
+}
+async function takePhoto(file){
+  const note=$('#photo-note');if(note)note.textContent='Preparing photo…';
+  try{state.draft.image=await processImage(file);showEditErr('');}catch(err){showEditErr(err.message||'That photo could not be used.');}
+  updatePhotoPreview();
+}
+function setBusy(b){state.busy=b;const s=$('#e-save');if(s){s.disabled=b;s.textContent=b?'Saving…':(state.draft&&state.draft.id?'Save changes':'Upload product');}}
+async function saveProduct(){
+  if(state.busy||!state.draft)return;
+  const d=state.draft;
+  const name=$('#e-name').value.trim(),priceRaw=$('#e-price').value.trim(),price=Number(priceRaw);
+  const category=$('#e-cat').value.trim()||'Mixed',blurb=$('#e-blurb').value.trim();
+  const checked=$('input[name="status"]:checked'),status=checked?checked.value:'live';
+  if(!name){$('#e-name').setAttribute('aria-invalid','true');showEditErr('Add a name for the product.');$('#e-name').focus();return;}
+  if(!priceRaw||!isFinite(price)||price<0||price>999999){$('#e-price').setAttribute('aria-invalid','true');showEditErr('Enter the price in pesos, like 1450.');$('#e-price').focus();return;}
+  const prod={id:d.id||newId(),name:name,price:Math.round(price),category:category,blurb:blurb,image:d.image||null,art:d.art||presetFor(name),status:status,sample:false};
+  const next=d.id?state.products.map(p=>p.id===d.id?prod:p):[prod].concat(state.products);
+  showEditErr('');setBusy(true);
+  flashSet(state.gh?(d.id?'Saved to GitHub. The live shop updates in a minute or two.':'Uploaded to GitHub. It will show on the live shop in a minute or two.'):(d.id?'Saved. The shop is updated.':'Product uploaded. It is on the shop now.'));
+  try{
+    await publishData({shop:state.shop,products:next});
+    state.products=next;closeSheet(true);renderBar();renderMain();flashShow();
+  }catch(err){
+    flashClear();setBusy(false);
+    const code=err&&err.code;
+    let msg='Could not save. Check your connection and try again.';
+    if(state.gh){
+      msg=ghMsg(code);
+      if(code==='conflict'){try{const nd=await ghLoad();if(nd&&Array.isArray(nd.products)){state.shop=nd.shop||state.shop;state.products=nd.products;renderMain();}}catch(e2){}}
+    }
+    else if(code==='conflict')msg='Someone saved the shop at the same moment, so this change was not applied. The page is reloading with their version. Please make the change again.';
+    else if(code==='not_writer'||code==='not_granted'||code==='not_declared'||code==='consent_required'||code==='capability_disabled')msg='This account can not save changes to the shop.';
+    else if(code==='too_large'||code==='too_big')msg='The shop page is full. Use fewer or smaller photos.';
+    else if(code==='rate_limited')msg='Too many saves in a row. Wait a moment and try again.';
+    showEditErr(msg);
+  }
+}
+
+/* ---------- publishing (the page rewrites itself from its own source parts) ---------- */
+const FALLBACK_RESET=':root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}';
+function readReset(){
+  try{
+    const st=Array.prototype.slice.call(document.head.querySelectorAll('style'));
+    const s=st.find(x=>/safe-area-inset/.test(x.textContent)&&/\[hidden\]/.test(x.textContent));
+    if(s)return s.textContent;
+  }catch(e){}
+  return FALLBACK_RESET;
+}
+function buildDocument(data){
+  const style=document.getElementById('page-style').textContent;
+  const script=document.getElementById('page-script').textContent;
+  const json=JSON.stringify(data).replace(/</g,'\\u003c').split(String.fromCharCode(8232)).join('\\u2028').split(String.fromCharCode(8233)).join('\\u2029');
+  return '<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>'+esc(TITLE)+'</title><style>'+readReset()+'</style></head><body>'+
+    '\n<meta name="claude:viewport-fit-sides" content="cover">\n<style id="page-style">'+style+'</style>\n<div id="app"></div>\n'+
+    '<script type="application/json" id="shop-data">'+json+'<\/script>\n<script id="page-script">'+script+'<\/script></body></html>';
+}
+async function publishData(data){
+  const html=buildDocument(data);
+  if(html.length>15500000)throw{code:'too_big'};
+  if(state.artifact){await state.artifact.publish(html);return;}
+  if(state.gh){await ghPublish(html);return;}
+  throw{code:'not_granted'};
+}
+
+/* ---------- events ---------- */
+function onClick(e){
+  const t=e.target.closest?e.target.closest('[data-act]'):null;if(!t)return;
+  const act=t.dataset.act,id=t.dataset.id;
+  if(act==='filter'){state.filter=t.dataset.cat;renderCatalog();focusBy('filter','cat',state.filter);}
+  else if(act==='add')addToCart(id,t);
+  else if(act==='open-cart')openCart();
+  else if(act==='close-sheet')closeSheet();
+  else if(act==='inc')changeQty(id,1);
+  else if(act==='dec')changeQty(id,-1);
+  else if(act==='browse'){closeSheet();const c=$('#catalog');if(c&&c.scrollIntoView)c.scrollIntoView({behavior:(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)?'auto':'smooth'});}
+  else if(act==='gh-off')ghOff();
+  else if(act==='new')openEditor(null);
+  else if(act==='edit')openEditor(id);
+  else if(act==='remove-photo'){if(state.draft){state.draft.image=null;updatePhotoPreview();}}
+}
+function onSubmit(e){
+  const f=e.target;
+  if(f.id==='order-form'){e.preventDefault();submitOrder();}
+  else if(f.id==='edit-form'){e.preventDefault();saveProduct();}
+  else if(f.id==='gh-form'){e.preventDefault();connectGh();}
+}
+function onInput(e){
+  const t=e.target,map={'o-name':'name','o-phone':'phone','o-date':'date','o-address':'address','o-message':'message'};
+  if(map[t.id]){state.form[map[t.id]]=t.value;persist();t.removeAttribute('aria-invalid');}
+  else if(t.closest&&t.closest('#edit-form')){t.removeAttribute('aria-invalid');if(t.id==='e-name'&&state.draft&&!state.draft.art&&!state.draft.image)updatePhotoPreview();}
+}
+function onChange(e){
+  const t=e.target;
+  if(t.id==='photo-input'&&t.files&&t.files[0]){const file=t.files[0];takePhoto(file).then(()=>{t.value='';});}
+}
+function onKey(e){
+  if(!state.sheet)return;
+  if(e.key==='Escape'){e.preventDefault();closeSheet();return;}
+  if(e.key==='Tab'){
+    const p=$('.sheet');if(!p)return;
+    const els=$$('a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled])',p).filter(x=>!x.hidden&&x.offsetParent!==null||x.classList.contains('vh'));
+    if(!els.length)return;
+    const first=els[0],last=els[els.length-1],cur=document.activeElement;
+    if(e.shiftKey&&(cur===first||cur===p)){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&cur===last){e.preventDefault();first.focus();}
+  }
+}
+function wireDrop(){
+  const app=$('#app');
+  app.addEventListener('dragover',e=>{if(e.target.closest&&e.target.closest('#photo-preview'))e.preventDefault();});
+  app.addEventListener('drop',e=>{
+    if(!(e.target.closest&&e.target.closest('#photo-preview')))return;
+    e.preventDefault();
+    const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+    if(f&&state.draft)takePhoto(f);
+  });
+}
+
+/* ---------- boot ---------- */
+async function initAccess(){
+  const c=window.claude;
+  if(c&&c.use){
+    const user=await c.use('user').catch(()=>null);
+    const art=await c.use('artifact').catch(()=>null);
+    let can=false;
+    if(user&&art){try{can=(await user.canEdit())===true;}catch(e){can=false;}}
+    if(can){state.artifact=art;state.access='owner';return;}
+  }
+  const s=ghSaved();
+  if(s.token&&s.repo){try{await ghConnect(s);return;}catch(e){}}
+  state.access='none';
+}
+function boot(){
+  const saved=lsGet();
+  if(saved&&saved.cart){Object.keys(saved.cart).forEach(id=>{const q=Number(saved.cart[id]);if(q>0)state.cart[id]=Math.min(Math.floor(q),20);});}
+  if(saved&&saved.form){Object.keys(state.form).forEach(k=>{if(typeof saved.form[k]==='string')state.form[k]=saved.form[k];});}
+  if(state.form.date&&state.form.date<todayISO())state.form.date='';
+  routeFromHash();
+  $('#app').innerHTML='<header class="bar" id="bar"></header><main id="main"></main><div id="sheet-root"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>';
+  renderBar();renderMain();
+  const app=$('#app');
+  app.addEventListener('click',onClick);
+  app.addEventListener('submit',onSubmit);
+  app.addEventListener('input',onInput);
+  app.addEventListener('change',onChange);
+  wireDrop();
+  document.addEventListener('keydown',onKey);
+  window.addEventListener('hashchange',()=>{routeFromHash();closeSheet(true);renderBar();renderMain();window.scrollTo(0,0);});
+  flashShow();
+  initAccess().then(()=>{renderBar();if(state.view==='admin'||state.gh)renderMain();});
+}
+boot();
+})();
+</script>
+
+</body></html>
