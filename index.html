@@ -1,4 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Dahlia Row</title><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Dahlia Row</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style id="page-style">
 @import url('https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
@@ -140,6 +141,11 @@ a{color:inherit}
 .gh-help{width:100%;max-width:460px;margin-top:8px;font-size:14px;color:var(--muted)}
 .gh-help summary{cursor:pointer;font-weight:600;color:var(--ink);min-height:32px}
 .gh-help ol{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.btn.danger{color:var(--bloom);border-color:var(--bloom)}
+.btn.danger:hover{background:var(--bloom);color:var(--on-bloom);border-color:var(--bloom)}
+.confirm{border:1.5px solid var(--bloom);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.confirm p{font-size:14px}
+.confirm-row{display:flex;gap:8px;flex-wrap:wrap}
 .gh-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;margin-top:8px;color:var(--muted);font-size:14px}
 
 /* admin */
@@ -186,7 +192,7 @@ a{color:inherit}
 .toast:empty{display:none}
 </style>
 <div id="app"></div>
-<script type="application/json" id="shop-data">{"shop":{"name":"Dahlia Row","contact":""},"products":[{"id":"p1","name":"Rosé Hour","price":1850,"category":"Roses","blurb":"Pink roses, white filler and eucalyptus in soft paper.","image":null,"art":{"kind":"rose","colors":["#E5658E","#F7B4C6","#A92D5C","#F1D3C2"],"seed":11},"status":"live","sample":true},{"id":"p2","name":"Sunday Sunflowers","price":1450,"category":"Sunflowers","blurb":"Bright sunflowers with greens, tied with a brown ribbon.","image":null,"art":{"kind":"daisy","colors":["#F4B400","#FFD966","#5B3A1A","#FFF1C9"],"seed":23},"status":"live","sample":true},{"id":"p3","name":"Tulip Morning","price":1650,"category":"Tulips","blurb":"Coral tulips wrapped loose, best opened slowly.","image":null,"art":{"kind":"tulip","colors":["#F2735A","#FFC2A8","#C23B2A","#F6E3D0"],"seed":31},"status":"live","sample":false},{"id":"p4","name":"Red Letter","price":2400,"category":"Roses","blurb":"Deep red roses with baby's breath. A classic for anniversaries.","image":null,"art":{"kind":"rose","colors":["#B3122E","#E2566E","#6E0A1D","#F0CFCF"],"seed":41},"status":"live","sample":true},{"id":"p5","name":"Lilac Field","price":1250,"category":"Mixed","blurb":"White daisies and baby's breath in lilac paper.","image":null,"art":{"kind":"daisy","colors":["#FFFFFF","#E6D9F5","#F2C230","#D9C7EE"],"seed":53},"status":"live","sample":true},{"id":"p6","name":"Peach Parade","price":1350,"category":"Mixed","blurb":"Roses, daisies and tulips in peach tones.","image":null,"art":{"kind":"mixed","colors":["#F9A27B","#FFD3B8","#C95A3B","#FBE4D3"],"seed":67},"status":"live","sample":true}]}</script>
+<script type="application/json" id="shop-data">{"shop":{"name":"Dahlia Row","contact":""},"products":[{"id":"p1","name":"Rosé Hour","price":1850,"category":"Roses","blurb":"Pink roses, white filler and eucalyptus in soft paper.","image":null,"art":{"kind":"rose","colors":["#E5658E","#F7B4C6","#A92D5C","#F1D3C2"],"seed":11},"status":"live","sample":true},{"id":"p2","name":"Sunday Sunflowers","price":1450,"category":"Sunflowers","blurb":"Bright sunflowers with greens, tied with a brown ribbon.","image":null,"art":{"kind":"daisy","colors":["#F4B400","#FFD966","#5B3A1A","#FFF1C9"],"seed":23},"status":"live","sample":true},{"id":"p3","name":"Tulip Morning","price":1650,"category":"Tulips","blurb":"Coral tulips wrapped loose, best opened slowly.","image":null,"art":{"kind":"tulip","colors":["#F2735A","#FFC2A8","#C23B2A","#F6E3D0"],"seed":31},"status":"soldout","sample":true},{"id":"p4","name":"Red Letter","price":2400,"category":"Roses","blurb":"Deep red roses with baby's breath. A classic for anniversaries.","image":null,"art":{"kind":"rose","colors":["#B3122E","#E2566E","#6E0A1D","#F0CFCF"],"seed":41},"status":"live","sample":true},{"id":"p5","name":"Lilac Field","price":1250,"category":"Mixed","blurb":"White daisies and baby's breath in lilac paper.","image":null,"art":{"kind":"daisy","colors":["#FFFFFF","#E6D9F5","#F2C230","#D9C7EE"],"seed":53},"status":"live","sample":true},{"id":"p6","name":"Peach Parade","price":1350,"category":"Mixed","blurb":"Roses, daisies and tulips in peach tones.","image":null,"art":{"kind":"mixed","colors":["#F9A27B","#FFD3B8","#C95A3B","#FBE4D3"],"seed":67},"status":"live","sample":true}]}</script>
 <script id="page-script">
 (function(){
 'use strict';
@@ -330,7 +336,7 @@ function adminHTML(){
     '<div class="arow-actions"><span class="pill '+p.status+'">'+STATUS[p.status]+'</span><button type="button" class="btn small" data-act="edit" data-id="'+p.id+'" aria-label="Edit '+esc(p.name)+'">Edit</button></div></li>').join('');
   return '<section class="admin"><div class="in narrow"><div class="admin-head"><div><p class="eyebrow">Shop admin</p><h1>Products</h1></div><button type="button" class="btn primary" data-act="new">Upload product</button></div>'+
     '<dl class="stats"><div><dt>in shop</dt><dd>'+n.live+'</dd></div><div><dt>sold out</dt><dd>'+n.soldout+'</dd></div><div><dt>hidden</dt><dd>'+n.hidden+'</dd></div></dl>'+
-    (state.gh?'<div class="gh-bar"><span>Publishing to <strong>'+esc(state.gh.repo)+'</strong> · '+esc(state.gh.path)+'</span><button type="button" class="btn small ghost" data-act="gh-off">Disconnect</button></div><p class="hint hint-top">Saving commits the change to GitHub. The live site updates once GitHub Pages rebuilds, usually within a minute or two. Products can be hidden from the shop but not deleted here.</p>':'<p class="hint hint-top">Saving puts the change on the shop right away. Products can be hidden from the shop but not deleted here.</p>')+
+    (state.gh?'<div class="gh-bar"><span>Publishing to <strong>'+esc(state.gh.repo)+'</strong> · '+esc(state.gh.path)+'</span><button type="button" class="btn small ghost" data-act="gh-off">Disconnect</button></div><p class="hint hint-top">Saving commits the change to GitHub. The live site updates once GitHub Pages rebuilds, usually within a minute or two. Hide a product to take it off the shop without losing it, or delete it for good.</p>':'<p class="hint hint-top">Saving puts the change on the shop right away. Hide a product to take it off the shop without losing it, or delete it for good.</p>')+
     (state.products.length?'<ul class="rows">'+rows+'</ul>':'<div class="empty pad"><p>No products yet. Upload the first bouquet to start the shop.</p></div>')+
     '</div></section>';
 }
@@ -598,7 +604,11 @@ function editorHTML(p){
     '<div class="field"><label for="e-cat">Flower type</label><input type="text" id="e-cat" list="cat-list" maxlength="30" autocomplete="off" placeholder="Roses, Tulips, Mixed" value="'+esc(p?p.category:'')+'"><datalist id="cat-list">'+cats.map(c=>'<option value="'+esc(c)+'">').join('')+'</datalist></div>'+
     '<div class="field"><label for="e-blurb">Short description</label><textarea id="e-blurb" maxlength="140">'+esc(p?p.blurb:'')+'</textarea></div>'+
     '<fieldset class="seg"><legend class="legend">Status</legend>'+seg+'</fieldset>'+
-    '</div><div class="sheet-foot"><p class="err" id="e-err" role="alert" hidden></p><button type="submit" class="btn primary wide" id="e-save">'+(p?'Save changes':'Upload product')+'</button></div></form></aside>';
+    '</div><div class="sheet-foot"><p class="err" id="e-err" role="alert" hidden></p><button type="submit" class="btn primary wide" id="e-save">'+(p?'Save changes':'Upload product')+'</button>'+
+    (p?'<button type="button" class="btn wide danger" data-act="ask-delete" id="del-ask">Delete product</button>'+
+    '<div class="confirm" id="del-confirm" hidden><p><strong>Delete '+esc(p.name)+'?</strong> This removes it from the shop for good. To keep it but take it off the shop, choose Hidden under Status instead.</p>'+
+    '<div class="confirm-row"><button type="button" class="btn danger" data-act="do-delete" id="del-yes">Yes, delete</button><button type="button" class="btn ghost" data-act="cancel-delete" id="del-no">Keep it</button></div></div>':'')+
+    '</div></form></aside>';
 }
 function openEditor(id){
   if(state.access!=='owner')return;
@@ -655,17 +665,44 @@ async function saveProduct(){
     state.products=next;closeSheet(true);renderBar();renderMain();flashShow();
   }catch(err){
     flashClear();setBusy(false);
-    const code=err&&err.code;
-    let msg='Could not save. Check your connection and try again.';
-    if(state.gh){
-      msg=ghMsg(code);
-      if(code==='conflict'){try{const nd=await ghLoad();if(nd&&Array.isArray(nd.products)){state.shop=nd.shop||state.shop;state.products=nd.products;renderMain();}}catch(e2){}}
-    }
-    else if(code==='conflict')msg='Someone saved the shop at the same moment, so this change was not applied. The page is reloading with their version. Please make the change again.';
-    else if(code==='not_writer'||code==='not_granted'||code==='not_declared'||code==='consent_required'||code==='capability_disabled')msg='This account can not save changes to the shop.';
-    else if(code==='too_large'||code==='too_big')msg='The shop page is full. Use fewer or smaller photos.';
-    else if(code==='rate_limited')msg='Too many saves in a row. Wait a moment and try again.';
-    showEditErr(msg);
+    showEditErr(await publishErrMsg(err));
+  }
+}
+async function publishErrMsg(err){
+  const code=err&&err.code;
+  let msg='Could not save. Check your connection and try again.';
+  if(state.gh){
+    msg=ghMsg(code);
+    if(code==='conflict'){try{const nd=await ghLoad();if(nd&&Array.isArray(nd.products)){state.shop=nd.shop||state.shop;state.products=nd.products;renderMain();}}catch(e2){}}
+  }
+  else if(code==='conflict')msg='Someone saved the shop at the same moment, so this change was not applied. The page is reloading with their version. Please make the change again.';
+  else if(code==='not_writer'||code==='not_granted'||code==='not_declared'||code==='consent_required'||code==='capability_disabled')msg='This account can not save changes to the shop.';
+  else if(code==='too_large'||code==='too_big')msg='The shop page is full. Use fewer or smaller photos.';
+  else if(code==='rate_limited')msg='Too many saves in a row. Wait a moment and try again.';
+  return msg;
+}
+function askDelete(on){
+  const ask=$('#del-ask'),box=$('#del-confirm'),save=$('#e-save');
+  if(!ask||!box)return;
+  box.hidden=!on;ask.hidden=on;if(save)save.hidden=on;
+  const f=on?$('#del-no'):ask;if(f)f.focus();
+}
+async function deleteProduct(){
+  if(state.busy||!state.draft||!state.draft.id)return;
+  const id=state.draft.id,next=state.products.filter(p=>p.id!==id);
+  const yes=$('#del-yes'),no=$('#del-no');
+  showEditErr('');state.busy=true;
+  if(yes){yes.disabled=true;yes.textContent='Deleting…';}if(no)no.disabled=true;
+  flashSet(state.gh?'Deleted from GitHub. The live shop updates in a minute or two.':'Product deleted.');
+  try{
+    await publishData({shop:state.shop,products:next});
+    state.products=next;delete state.cart[id];persist();
+    closeSheet(true);renderBar();renderMain();flashShow();
+  }catch(err){
+    flashClear();state.busy=false;
+    const y=$('#del-yes'),n=$('#del-no');
+    if(y){y.disabled=false;y.textContent='Yes, delete';}if(n)n.disabled=false;
+    showEditErr(await publishErrMsg(err));
   }
 }
 
@@ -709,6 +746,9 @@ function onClick(e){
   else if(act==='gh-off')ghOff();
   else if(act==='new')openEditor(null);
   else if(act==='edit')openEditor(id);
+  else if(act==='ask-delete')askDelete(true);
+  else if(act==='cancel-delete')askDelete(false);
+  else if(act==='do-delete')deleteProduct();
   else if(act==='remove-photo'){if(state.draft){state.draft.image=null;updatePhotoPreview();}}
 }
 function onSubmit(e){
@@ -784,4 +824,6 @@ function boot(){
 }
 boot();
 })();
-</script></body></html>
+</script>
+
+</body></html>
